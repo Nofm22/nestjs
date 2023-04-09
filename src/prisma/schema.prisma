@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id            String         @id @default(uuid())
+  oldId         String?        @map(name: "old_id")
+  avatar        String?        @db.Text
+  email         String?
+  emailVerified Boolean?       @map(name: "email_verified")
+  name          String?
+  uid           String?
+  phoneNumber   String?        @map(name: "phone_number") @db.Text
+  provider      String?
+  roleId        Int?           @map(name: "role_id")
+  approvedAt    DateTime?      @map(name: "approved_at")
+  createdAt     DateTime?      @default(now()) @map(name: "created_at")
+  updatedAt     DateTime?      @default(now()) @updatedAt @map(name: "updated_at")
+  role          roles?         @relation(fields: [roleId], references: [id])
+  userRoomChat  userRoomChat[]
+  roomChat      roomChat[]
+  messages      messages[]
+}
+
+model roles {
+  id    Int     @id
+  title String
+  users users[]
+}
+
+model roomChat {
+  id            String         @id @default(uuid())
+  title         String?
+  status        Boolean        @default(true)
+  createdUserId String         @map(name: "created_user_id")
+  createdAt     DateTime       @default(now()) @map(name: "created_at")
+  updatedAt     DateTime       @default(now()) @map(name: "updated_at")
+  userRoomChat  userRoomChat[]
+  user          users          @relation(fields: [createdUserId], references: [id])
+  messages      messages[]
+
+  @@map(name: "room_chat")
+}
+
+model userRoomChat {
+  id       Int        @id @default(autoincrement())
+  userId   String     @map(name: "user_id")
+  roomId   String     @map(name: "room_id")
+  isInRoom Boolean    @default(true) @map(name: "is_in_room")
+  user     users?     @relation(fields: [userId], references: [id])
+  roomChat roomChat?  @relation(fields: [roomId], references: [id])
+  messages messages[]
+
+  @@map(name: "user_room_chat")
+}
+
+model messages {
+  id             Int           @id @default(autoincrement())
+  content        String        @db.Text
+  replyMessageId Int?          @unique @map(name: "reply_message_id")
+  roomChatId     String        @map(name: "user_room_chat_id")
+  userId         String        @map(name: "user_id")
+  isRead         Boolean?      @default(false)
+  createdAt      DateTime      @default(now()) @map(name: "created_at")
+  updatedAt      DateTime      @default(now()) @map(name: "updated_at")
+  roomChat       roomChat      @relation(fields: [roomChatId], references: [id])
+  user           users?        @relation(fields: [userId], references: [id])
+  messageReply   messages?     @relation(name: "message_reply", fields: replyMessageId, references: id)
+  messages       messages?     @relation(name: "message_reply")
+  userRoomChat   userRoomChat? @relation(fields: [userRoomChatId], references: [id])
+  userRoomChatId Int?
+}
