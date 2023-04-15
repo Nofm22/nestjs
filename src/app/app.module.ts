@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from '../common/logger.middleware';
-import { AuthModule } from 'src/modules/auth/auth.module';
-import { UsersModule } from 'src/modules/admin/users/users.module';
+import { AuthModule } from '../modules/auth/auth.module';
+import { UsersModule } from '../modules/admin/users/users.module';
+import { RoomsModule } from '../modules/admin/rooms/rooms.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsersModule } from 'src/modules/admin/users/users.module';
     }),
     UsersModule,
     AuthModule,
+    RoomsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
