@@ -1,0 +1,45 @@
+###
+POST http://localhost:8001/v1/auth/sign-in
+content-type: application/json
+
+{
+  "id": "17d462a0-81ad-4d65-a32a-0519d595ab14",
+  "provider": "google.com",
+  "name": "Nhật Minh",
+  "uid": "XhdBqJj9F9QFdpXabGhOa5eEDC12",
+  "email": "nguyenhoang11318@gmail.com",
+  "emailVerified": true,
+  "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0VdMlr9sNvdhlYNQydRtLbY7Ttae3FlFPTa0Oe=s96-c",
+  "phoneNumber": "0934667489"
+}
+
+### 
+GET http://localhost:8001/v1/auth/profile 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE1NDk4NDAsImV4cCI6MTY4NDE0MTg0MH0.vVMsjQhaeTW5XQP9NUFr3YKFzvkSRL9VQr77WrajUJw
+
+
+
+
+###
+GET http://localhost:8001/v1/users/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE1NDk4NDAsImV4cCI6MTY4NDE0MTg0MH0.vVMsjQhaeTW5XQP9NUFr3YKFzvkSRL9VQr77WrajUJw
+
+
+### Update user role
+POST http://localhost:8001/v1/users/2714c4fc-96d5-4df8-bdc1-aebd47051342
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE1NDk4NDAsImV4cCI6MTY4NDE0MTg0MH0.vVMsjQhaeTW5XQP9NUFr3YKFzvkSRL9VQr77WrajUJw
+
+{
+  "user": {
+    "phoneNumber": "2",
+    "role": 2
+  }
+}
+
+### Approve Writer by admin 
+POST http://localhost:8001/v1/users/2714c4fc-96d5-4df8-bdc1-aebd47051342/approve-writer
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE1NDk4NDAsImV4cCI6MTY4NDE0MTg0MH0.vVMsjQhaeTW5XQP9NUFr3YKFzvkSRL9VQr77WrajUJw

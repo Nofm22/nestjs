@@ -23,3 +23,14 @@ export const handleError = (error: any) => {
     HttpStatus.INTERNAL_SERVER_ERROR,
   );
 };
+
+export const SUCCESS_RESPONSE = (data: any) => ({
+  success: true,
+  ...data,
+});
+
+export const ERROR_RESPONSE = ({ errors, data }: any) => ({
+  success: false,
+  errors,
+  ...data,
+});

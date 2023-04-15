@@ -3,13 +3,16 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerMiddleware } from '../common/logger.middleware';
-import { CatsModule } from '../modules/cats/cats.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
+import { UsersModule } from 'src/modules/admin/users/users.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    CatsModule,
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
