@@ -25,11 +25,14 @@ import {
 import { Response } from 'express';
 import { AddUserInRoomCreateInput } from '../../../type';
 import { MessagesService } from '../messages/messages.service';
+import { CreatePrivateRoomDto } from './dto/create-room.dto';
+import { UsersService } from '../users/users.service';
 @Controller('rooms')
 export class RoomsController {
   constructor(
     private readonly roomsService: RoomsService,
     private readonly messageService: MessagesService,
+    private readonly userService: UsersService,
   ) {}
 
   @Post('create')
@@ -74,6 +77,68 @@ export class RoomsController {
     } catch (e) {
       handleError(e);
     }
+  }
+
+  @Post('create-private-room')
+  @Roles(Role.Admin)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  async createPrivateRoom(
+    @CurrentUser('id') createdUserId,
+    @Res() res: Response,
+    @Body() data: CreatePrivateRoomDto,
+  ) {
+    const { userId } = data;
+    const user = await this.userService.getUserById(userId);
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).send(
+        ERROR_RESPONSE({
+          errors: ['Không tìm thấy user'],
+        }),
+      );
+    }
+
+    // Check isExists group chat private between 2 user
+    const roomExist = await this.roomsService.checkExistPrivateRoom(
+      createdUserId,
+      userId,
+    );
+    if (roomExist) {
+      res.send(
+        SUCCESS_RESPONSE({
+          room: {
+            roomId: roomExist,
+          },
+        }),
+      );
+    }
+    const title: string = user.name as string;
+    const isGroupChat: boolean = false;
+    const room = await this.roomsService.create(
+      { title, userId: createdUserId },
+      isGroupChat,
+    );
+
+    if (!room) {
+      return res.status(HttpStatus.BAD_REQUEST).send(
+        ERROR_RESPONSE({
+          errors: ['Không thể tạo phòng'],
+        }),
+      );
+    }
+    // Assign user in room chat
+    const users: AddUserInRoomCreateInput[] = [
+      { id: createdUserId },
+      { id: userId },
+    ];
+    await this.roomsService.addUSerInRoomByAdmin(users, room.id);
+
+    return res.send(
+      SUCCESS_RESPONSE({
+        room: {
+          roomId: room.id,
+        },
+      }),
+    );
   }
 
   @Get()

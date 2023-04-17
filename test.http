@@ -49,3 +49,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhM
 POST http://localhost:8001/v1/rooms/create
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+
+### Create private room by admin 
+POST http://localhost:8001/v1/rooms/create-private-room
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+{
+  "userId": "00f11c13-7e38-4c76-a1da-9070b7600803"
+}

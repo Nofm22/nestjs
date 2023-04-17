@@ -6,3 +6,8 @@ export class CreateRoomDto {
   @IsString()
   userId: string;
 }
+
+export class CreatePrivateRoomDto {
+  @IsString()
+  userId: string;
+}

@@ -86,6 +86,41 @@ export class RoomsService {
       };
     });
   }
+
+  async checkExistPrivateRoom(
+    userOne: string,
+    userTwo: string,
+  ): Promise<string | null> {
+    const rooms = await this.prismaService.roomChat.findMany({
+      where: {
+        isGroupChat: false,
+      },
+      select: {
+        id: true,
+        userRoomChat: {
+          select: {
+            userId: true,
+          },
+        },
+      },
+    });
+    let isExists: boolean = false;
+    let roomId: string | null = null;
+    rooms?.forEach(({ id, userRoomChat }) => {
+      if (
+        userRoomChat.some(({ userId }) => userId === userOne) &&
+        userRoomChat.some(({ userId }) => userId === userTwo)
+      ) {
+        isExists = true;
+        roomId = id;
+      }
+    });
+    if (!isExists) {
+      return null;
+    } else {
+      return roomId;
+    }
+  }
   findAll() {
     return `This action returns all rooms`;
   }
