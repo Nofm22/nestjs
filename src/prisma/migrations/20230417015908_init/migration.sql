@@ -33,6 +33,7 @@ CREATE TABLE `room_chat` (
     `created_user_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `is_group_chat` BOOLEAN NOT NULL DEFAULT true,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -54,10 +55,11 @@ CREATE TABLE `messages` (
     `reply_message_id` INTEGER NULL,
     `user_room_chat_id` VARCHAR(191) NOT NULL,
     `user_id` VARCHAR(191) NOT NULL,
+    `pinner_id` VARCHAR(191) NULL,
+    `is_pinned` BOOLEAN NULL DEFAULT false,
     `isRead` BOOLEAN NULL DEFAULT false,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `userRoomChatId` INTEGER NULL,
 
     UNIQUE INDEX `messages_reply_message_id_key`(`reply_message_id`),
     PRIMARY KEY (`id`)
@@ -82,7 +84,7 @@ ALTER TABLE `messages` ADD CONSTRAINT `messages_user_room_chat_id_fkey` FOREIGN 
 ALTER TABLE `messages` ADD CONSTRAINT `messages_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `messages` ADD CONSTRAINT `messages_reply_message_id_fkey` FOREIGN KEY (`reply_message_id`) REFERENCES `messages`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `messages` ADD CONSTRAINT `messages_pinner_id_fkey` FOREIGN KEY (`pinner_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `messages` ADD CONSTRAINT `messages_userRoomChatId_fkey` FOREIGN KEY (`userRoomChatId`) REFERENCES `user_room_chat`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `messages` ADD CONSTRAINT `messages_reply_message_id_fkey` FOREIGN KEY (`reply_message_id`) REFERENCES `messages`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
