@@ -11,7 +11,7 @@ async function bootstrap() {
     origin: ['http://localhost:8080', 'https://stagingsocket.wecontent.vn'],
     credentials: true,
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   // app.useGlobalInterceptors(new TransformInterceptor());
   const PORT = process.env.NODE_ENV === 'development' ? 8001 : 8002;
   await app.listen(PORT, () => {

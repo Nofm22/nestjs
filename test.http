@@ -13,6 +13,16 @@ content-type: application/json
   "phoneNumber": "0934667489"
 }
 
+# {
+#   "id": "8193db6a-35dc-4a91-884a-f797683a01be",
+#   "provider": "google.com",
+#   "name": "Nhật Minh",
+#   "uid": "XhdBqJj9F9QFdpXabGhOa5eEDC12",
+#   "email": "nguyenhoang11318@gmail.com",
+#   "emailVerified": true,
+#   "avatar": "https://lh3.googleusercontent.com/a/ALm5wu0VdMlr9sNvdhlYNQydRtLbY7Ttae3FlFPTa0Oe=s96-c",
+#   "phoneNumber": "0934667489"
+# }
 ### 
 GET http://localhost:8001/v1/auth/profile 
 Content-Type: application/json
@@ -59,3 +69,63 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhM
 {
   "userId": "00f11c13-7e38-4c76-a1da-9070b7600803"
 }
+
+
+### Add user in room
+POST http://localhost:8001/v1/rooms/add-user 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+{
+  "users": [
+    {"id": "00f11c13-7e38-4c76-a1da-9070b7600803"}
+  ],
+  "roomId": "bd347e8d-f618-467d-87dc-1812a847a1c6"
+}
+
+
+### Get all rooms by admin 
+GET http://localhost:8001/v1/rooms/get-all-rooms
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+
+### Get my rooms 
+GET http://localhost:8001/v1/rooms/get-my-rooms?page=1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+
+### Remove user from room
+POST http://localhost:8001/v1/rooms/remove-user 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+{
+  "users": [
+    {
+      "id": "00f11c13-7e38-4c76-a1da-9070b7600803"
+    }
+  ],
+  "roomId": "bd347e8d-f618-467d-87dc-1812a847a1c6"
+
+}
+
+### Get all user in room
+GET http://localhost:8001/v1/rooms/get-users-room?roomId=a8951bd2-9cdd-4787-bbcb-680eee59c726
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+
+
+### Get room detail
+GET http://localhost:8001/v1/rooms/a8951bd2-9cdd-4787-bbcb-680eee59c726
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms
+
+
+
+### Remove room 
+POST http://localhost:8001/v1/rooms/bd347e8d-f618-467d-87dc-1812a847a1c6/remove
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiIxN2Q0NjJhMC04MWFkLTRkNjUtYTMyYS0wNTE5ZDU5NWFiMTQiLCJyb2xlIjoxLCJpYXQiOjE2ODE3MDAwMjUsImV4cCI6MTY4NDI5MjAyNX0.f9ypOKPENvk4a8suYFBwRvOcihAPBtActfAPlE2kvms

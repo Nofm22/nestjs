@@ -64,19 +64,29 @@ model userRoomChat {
 }
 
 model messages {
-  id             Int       @id @default(autoincrement())
-  content        String    @db.Text
-  replyMessageId Int?      @unique @map(name: "reply_message_id")
-  roomChatId     String    @map(name: "user_room_chat_id")
-  userId         String    @map(name: "user_id")
-  pinnerId       String?   @map(name: "pinner_id")
-  isPinned       Boolean?  @default(false) @map(name: "is_pinned")
-  isRead         Boolean?  @default(false)
-  createdAt      DateTime  @default(now()) @map(name: "created_at")
-  updatedAt      DateTime  @default(now()) @map(name: "updated_at")
-  roomChat       roomChat  @relation(fields: [roomChatId], references: [id])
-  user           users?    @relation(name: "sender", fields: [userId], references: [id])
-  pinner         users?    @relation(name: "pinner", fields: [pinnerId], references: [id])
-  messageReply   messages? @relation(name: "message_reply", fields: replyMessageId, references: id)
-  messages       messages? @relation(name: "message_reply")
+  id                  Int                @id @default(autoincrement())
+  content             String             @db.Text
+  replyMessageId      Int?               @unique @map(name: "reply_message_id")
+  roomChatId          String             @map(name: "user_room_chat_id")
+  userId              String?            @map(name: "user_id")
+  pinnerId            String?            @map(name: "pinner_id")
+  isPinned            Boolean?           @default(false) @map(name: "is_pinned")
+  isRead              Boolean?           @default(false)
+  actionMessageTypeId Int?               @map(name: "action_message_type_id")
+  createdAt           DateTime           @default(now()) @map(name: "created_at")
+  updatedAt           DateTime           @default(now()) @map(name: "updated_at")
+  actionMessageType   actionMessageType? @relation(fields: [actionMessageTypeId], references: [id])
+  roomChat            roomChat           @relation(fields: [roomChatId], references: [id])
+  user                users?             @relation(name: "sender", fields: [userId], references: [id])
+  pinner              users?             @relation(name: "pinner", fields: [pinnerId], references: [id])
+  messageReply        messages?          @relation(name: "message_reply", fields: replyMessageId, references: id)
+  messages            messages?          @relation(name: "message_reply")
+}
+
+model actionMessageType {
+  id       Int        @id @default(autoincrement())
+  title    String
+  messages messages[]
+
+  @@map(name: "action_message_type")
 }

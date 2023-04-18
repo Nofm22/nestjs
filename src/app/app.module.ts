@@ -6,6 +6,7 @@ import { LoggerMiddleware } from '../common/logger.middleware';
 import { AuthModule } from '../modules/auth/auth.module';
 import { UsersModule } from '../modules/admin/users/users.module';
 import { RoomsModule } from '../modules/admin/rooms/rooms.module';
+import { WebSocketModule } from '../modules/socket/websocket.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RoomsModule } from '../modules/admin/rooms/rooms.module';
     UsersModule,
     AuthModule,
     RoomsModule,
+    WebSocketModule,
   ],
   controllers: [AppController],
   providers: [AppService],

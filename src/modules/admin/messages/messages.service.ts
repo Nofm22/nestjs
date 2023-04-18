@@ -2,31 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { PrismaService } from '../../../prisma.service';
-import { messageTimeDisplayChatRoom } from '../../../shared/utils/date-time';
-import { LastMessage } from '../../../type';
+import {
+  formatTime,
+  messageTimeDisplayChatRoom,
+} from '../../../shared/utils/date-time';
+import { GetMessageReponse, LastMessage } from '../../../type';
+import { DEFAULT_PAGE, ITEM_PER_PAGE } from 'src/constant/pagination';
 
 @Injectable()
 export class MessagesService {
   constructor(private readonly prismaService: PrismaService) {}
-  create(createMessageDto: CreateMessageDto) {
-    return 'This action adds a new message';
-  }
-
-  findAll() {
-    return `This action returns all messages`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} message`;
-  }
-
-  update(id: number, updateMessageDto: UpdateMessageDto) {
-    return `This action updates a #${id} message`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} message`;
-  }
   async getLastestMessageInRoom(roomId: string): Promise<LastMessage | null> {
     const message = await this.prismaService.messages.findMany({
       where: {
@@ -55,5 +40,62 @@ export class MessagesService {
       senderName: user?.name as string,
       createdAt: messageTimeDisplayChatRoom(new Date(createdAt)),
     };
+  }
+
+  async getAllMessageInRoom(
+    roomId: string,
+    page: number = DEFAULT_PAGE,
+    perPage: number = ITEM_PER_PAGE,
+  ): Promise<GetMessageReponse[]> {
+    const messages = await this.prismaService.messages.findMany({
+      where: {
+        roomChatId: roomId,
+      },
+      select: {
+        id: true,
+        replyMessageId: true,
+        content: true,
+        createdAt: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            avatar: true,
+          },
+        },
+        messageReply: {
+          select: {
+            content: true,
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+
+    return messages.reverse().map(({ user, messageReply, ...rest }: any) => {
+      return {
+        id: rest.id,
+        sender: {
+          name: user?.name,
+          avatar: user?.avatar,
+          id: user?.id,
+        },
+        messageReply: {
+          message: messageReply?.content,
+          name: messageReply?.user.name,
+        },
+        content: rest?.content,
+        createdAt: formatTime(rest?.createdAt),
+      };
+    });
   }
 }
